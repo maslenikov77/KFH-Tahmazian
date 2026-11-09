@@ -166,320 +166,179 @@
 </footer>
     </main>
  
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- <script>
-
-const supabaseUrl =
-"https://hlaxqpzygokolphyvtxl.supabase.co";
-
-const supabaseKey =
-"sb_publishable_jBv773yP-etlM7TJ5CIrmQ_NWxcJzF0";
-
-const supabase = window.supabase.createClient(
-    supabaseUrl,
-    supabaseKey
-);
-
+<script>
 document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================
-       Дата и время
+       Дата, время и часовой пояс
     ========================= */
-
-    const dateTimeElement =
-        document.getElementById("dateTimeDisplay");
+    const dateTimeElement = document.getElementById("dateTimeDisplay");
 
     function updateDateTime() {
-
         const now = new Date();
 
         const timeZone =
-            Intl.DateTimeFormat()
-                .resolvedOptions()
-                .timeZone;
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        const dateTime =
-            now.toLocaleString("ru-RU", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            });
+        const dateTime = now.toLocaleString("ru-RU", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
 
         if (dateTimeElement) {
-
-            dateTimeElement.innerHTML =
-                `${dateTime}<br>🌍 ${timeZone}`;
-
+            dateTimeElement.innerHTML = `
+                ${dateTime}<br>
+                🌍 ${timeZone}
+            `;
         }
-
     }
 
     updateDateTime();
     setInterval(updateDateTime, 1000);
 
     /* =========================
-       Галерея
+       Lightbox галерея
     ========================= */
+    const thumbnails = document.querySelectorAll(".thumbnail");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const closeBtn = document.querySelector(".lightbox .close");
 
-    const thumbnails =
-        document.querySelectorAll(".thumbnail");
-
-    const lightbox =
-        document.getElementById("lightbox");
-
-    const lightboxImg =
-        document.getElementById("lightbox-img");
-
-    const closeBtn =
-        document.querySelector(".lightbox .close");
-
-    if (
-        thumbnails.length &&
-        lightbox &&
-        lightboxImg &&
-        closeBtn
-    ) {
+    if (thumbnails.length && lightbox && lightboxImg && closeBtn) {
 
         thumbnails.forEach(thumbnail => {
-
             thumbnail.addEventListener("click", () => {
-
-                lightboxImg.src =
-                    thumbnail.src;
-
-                lightbox.style.display =
-                    "flex";
-
+                const fullImgSrc = thumbnail.getAttribute("data-full");
+                lightboxImg.src = fullImgSrc;
+                lightbox.style.display = "flex";
             });
-
         });
 
-        closeBtn.addEventListener("click",
-        function () {
-
-            lightbox.style.display =
-                "none";
-
+        closeBtn.addEventListener("click", () => {
+            lightbox.style.display = "none";
             lightboxImg.src = "";
-
         });
 
+        document.addEventListener("keydown", (e) => {
+            if (
+                e.key === "Escape" &&
+                lightbox.style.display === "flex"
+            ) {
+                lightbox.style.display = "none";
+                lightboxImg.src = "";
+            }
+        });
     }
 
     /* =========================
-       Бургер меню
+       Бургер-меню
     ========================= */
-
-    const menuToggle =
-        document.getElementById("menuToggle");
-
-    const nav =
-        document.querySelector("nav");
+    const menuToggle = document.getElementById("menuToggle");
+    const nav = document.querySelector("nav");
 
     if (menuToggle && nav) {
-
-        menuToggle.addEventListener(
-            "click",
-            function () {
-
-                nav.classList.toggle("open");
-
-            }
-        );
-
+        menuToggle.addEventListener("click", function () {
+            nav.classList.toggle("open");
+        });
     }
 
     /* =========================
-       Комментарии SUPABASE
+       Комментарии
     ========================= */
-
-    const form =
-        document.getElementById("commentForm");
-
-    const commentsList =
-        document.getElementById("commentsList");
-
-    async function loadComments() {
-
-        const { data, error } =
-            await supabase
-                .from("comments")
-                .select("*")
-                .order("id", {
-                    ascending: false
-                });
-
-        if (error) {
-
-            console.error(error);
-            return;
-
-        }
-
-        commentsList.innerHTML = "";
-
-        data.forEach(item => {
-
-            const block =
-                document.createElement("div");
-
-            block.className =
-                "comment";
-
-            block.innerHTML = `
-                <strong>${item.name}</strong>
-                <p>${item.comment}</p>
-            `;
-
-            commentsList.appendChild(block);
-
-        });
-
-    }
+    const form = document.getElementById("commentForm");
+    const commentsList = document.getElementById("commentsList");
 
     if (form && commentsList) {
 
-        loadComments();
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
 
-        form.addEventListener(
-            "submit",
-            async function (e) {
+            const name = document.getElementById("name").value.trim();
+            const comment = document.getElementById("comment").value.trim();
 
-                e.preventDefault();
-
-                const name =
-                    document.getElementById("name")
-                    .value
-                    .trim();
-
-                const comment =
-                    document.getElementById("comment")
-                    .value
-                    .trim();
-
-                if (!name || !comment) {
-
-                    alert(
-                        "Заполните все поля."
-                    );
-
-                    return;
-
-                }
-
-                const { error } =
-                    await supabase
-                        .from("comments")
-                        .insert([
-                            {
-                                name: name,
-                                comment: comment
-                            }
-                        ]);
-
-                if (error) {
-
-                    console.error(error);
-
-                    alert(
-                        "Ошибка сохранения комментария."
-                    );
-
-                    return;
-
-                }
-
-                form.reset();
-
-                loadComments();
-
+            if (!name || !comment) {
+                alert("Заполните все поля.");
+                return;
             }
-        );
 
+            const newComment = document.createElement("div");
+
+            newComment.className = "comment";
+
+            newComment.innerHTML = `
+                <strong>${name}</strong>
+                <p>${comment}</p>
+                <button class="delete-comment">
+                    🗑️ Удалить
+                </button>
+            `;
+
+            commentsList.prepend(newComment);
+
+            form.reset();
+        });
+
+        document.addEventListener("click", function (e) {
+
+            if (e.target.classList.contains("delete-comment")) {
+                e.target.closest(".comment").remove();
+            }
+
+        });
     }
 
-    /* =========================
-       Приветствие
-    ========================= */
+   /* Стартовое окно */
+const introScreen = document.getElementById("introScreen");
+const nameInput = document.getElementById("nameInput");
+const startBtn = document.getElementById("startBtn");
+const mainContent = document.querySelector("main");
+const greeting = document.getElementById("personalGreeting");
 
-    const introScreen =
-        document.getElementById("introScreen");
+/* Проверяем, был ли посетитель раньше */
+const savedName = localStorage.getItem("visitorName");
 
-    const nameInput =
-        document.getElementById("nameInput");
+if (savedName) {
 
-    const startBtn =
-        document.getElementById("startBtn");
+    introScreen.style.display = "none";
 
-    const greeting =
-        document.getElementById(
-            "personalGreeting"
-        );
+    if (greeting) {
+        greeting.textContent =
+            `👋 С возвращением, ${savedName}!`;
+    }
 
-    const savedName =
-        localStorage.getItem(
-            "visitorName"
-        );
+} else {
 
-    if (savedName) {
+    introScreen.style.display = "flex";
 
-        introScreen.style.display =
-            "none";
+    startBtn.addEventListener("click", function () {
 
-        if (greeting) {
+        const name = nameInput.value.trim();
 
-            greeting.textContent =
-                `👋 С возвращением, ${savedName}!`;
+        if (name !== "") {
 
-        }
+            localStorage.setItem("visitorName", name);
 
-    } else {
+            introScreen.style.display = "none";
 
-        introScreen.style.display =
-            "flex";
-
-        startBtn.addEventListener(
-            "click",
-            function () {
-
-                const name =
-                    nameInput.value.trim();
-
-                if (name !== "") {
-
-                    localStorage.setItem(
-                        "visitorName",
-                        name
-                    );
-
-                    introScreen.style.display =
-                        "none";
-
-                    if (greeting) {
-
-                        greeting.textContent =
-                            `👋 Добро пожаловать, ${name}!`;
-
-                    }
+            if (greeting) {
+                greeting.textContent =
+                    `👋 Добро пожаловать, ${name}!`;
+            }
 
                 } else {
 
-                    alert(
-                        "Пожалуйста, введите ваше имя."
-                    );
+            alert("Пожалуйста, введите ваше имя.");
 
-                }
+        }
+    });
+}
 
-            }
-        );
-
-    }
-
-});
+});  // закрывает DOMContentLoaded
 
 </script>
 
