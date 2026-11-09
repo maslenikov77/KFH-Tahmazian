@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lochquarry Outdoor Centre</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/mystyle.css">
+    <link rel="stylesheet" href="styles/sydeNav.css">
+</head>
+<body class="cheese-page blue-cheese-page">
+
+    <!-- Burger button (mobile) -->
+    <button id="menuToggle" aria-label="Open menu">☰</button>
+
+
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Домой</a></li>
+            <li><a href="milkmaid.html">Молочница</a></li>
+            
+           
+
+            <li>
+                <form
+    action="https://yandex.ru/search/"
+    method="get"
+    target="_blank"
+    id="searchForm">
+
+    <input
+        type="text"
+        name="text"
+        id="searchInput"
+        placeholder="Поиск в Яндексе"
+        required>
+
+    <button type="submit">Найти</button>
+</form>
+            </li>
+
+            <li><span id="dateTimeDisplay"></span></li>
+
+            <li>
+                <a href="https://www.gorod-kurganinsk.ru/"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="color:#00ffc3;font-weight:normal;">
+       Визит в наш город →
+    </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+
+        
+
+        <header>
+            <div class="logo">
+                <img src="images/logo/logo.png" alt="Lochquarry Logo">
+            </div>
+        </header>
+
+        <section class="description">
+            <hr>
+            <h1>Добро пожаловать в нашу сыроварню!</h1>
+
+            <p>Здесь рождаются натуральные сыры из свежего молока собственного хозяйства.</p> 
+            <p>Мы объединяем традиционные технологии, качественные ингредиенты и любовь к своему делу,
+                чтобы каждый сорт радовал своим неповторимым вкусом.</p>
+
+            <p><strong>Приятного знакомства с нашей коллекцией сыров Táha! 🧀🐄</strong></p>
+            <hr>
+
+            <div class="staff-member">
+                <img src="images/chees/chees1.jpeg" alt="chees1" class="staff-photo">
+                <div class="staff-info">
+                    <h2>Táha пажитник</h2>
+
+<p>
+    
+        Сыр изготовлен по итальянской технологии с добавлением семян
+        пажитника. Головки сыра покрываются смесью копчёной паприки
+        и оливкового масла.
+    
+</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="staff-member">
+                <img src="images/chees/chees2.jpeg" alt="chees2" class="staff-photo">
+                <div class="staff-info">
+                    <h2>Чёрное море</h2>
+                    <p>Авторский сыр изготовлен по технологии чеддера с добавлением 
+                        чернил морской каракатицы ,в результате сыр обладает оригинальным 
+                        внешним видом и отличными вкусовыми качествами.</p>
+                    
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="staff-member">
+                <img src="images/chees/chees4.jpeg" alt="chees3" class="staff-photo">
+                <div class="staff-info">
+                    <h2>Грибной</h2>
+                    <p>Твердый сыр с добавлением лесных грибов,вкус очень нежный,режешь сыр 
+                        и пахнет лесной полянкой с грибами.</p>
+                
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="staff-member">
+                <img src="images/chees/chees5.jpeg" alt="chees3" class="staff-photo">
+                <div class="staff-info">
+                    <h2>Táha козий</h2>
+                    <p>Taha козий,молодой сыр из козьего молока,имеет лёгкий аромат и нежный 
+                        и ненавязчивый вкус.</p>
+                
+                </div>
+            </div>
+
+            <hr>
+            <p>Телефон организации<strong>+7 918 018 13 18</strong>.</p>
+        </section>
+
+        <section id="comments">
+    <h3>Комментарии</h3>
+
+    <form id="commentForm">
+        <input type="text" id="name" placeholder="Ваше имя" required>
+
+        <textarea id="comment"
+                  placeholder="Напишите комментарий"
+                  required></textarea>
+
+        <button type="submit">
+            Отправить
+        </button>
+    </form>
+
+    <div id="commentsList"></div>
+</section>
+
+        <footer>
+            <div class="socials">
+                
+                <a href="https://www.instagram.com/tahacheese/" target="_blank">
+                    <img src="images/socialmedia/instagram.webp" alt="Visit our Instagram profile">
+                </a>
+              
+            </div>
+        </footer>
+             <footer>
+    <a href="https://maslenikov77.github.io/mywebsite/"
+       target="_blank">
+        © 2026 Denis Maslenikov · Web Design & Frontend
+    </a>
+</footer>
+    </main>
+
+    <!-- SCRIPT -->
+ <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const nav = document.querySelector("nav");
+    const menuToggle = document.getElementById("menuToggle");
+    const dateTimeElement = document.getElementById("dateTimeDisplay");
+
+    /* Mobile menu toggle */
+    if (menuToggle) {
+        menuToggle.addEventListener("click", function () {
+            nav.classList.toggle("open");
+        });
+    }
+
+    /* =========================
+       Дата, время и часовой пояс
+    ========================= */
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const timeZone =
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        const dateTime = now.toLocaleString("ru-RU", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
+
+        if (dateTimeElement) {
+            dateTimeElement.innerHTML = `
+                ${dateTime}<br>
+                🌍 ${timeZone}
+            `;
+        }
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+});
+</script>
+</body>
+
+</html>
+
+
+
+
+
+

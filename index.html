@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Крестьянское фермерское хозяйство ИП Тахмазян</title>
+    <link rel="stylesheet" href="styles/mystyle.css">
+    <link rel="stylesheet" href="styles/sydeNav.css">
+</head>
+
+<body>
+
+ 
+<!-- Burger button (mobile) -->
+    <button id="menuToggle" aria-label="Open menu">☰</button>
+
+   <div id="introScreen">
+    <div id="introBox">
+
+        <h2 id="introTitle" style="color: #2e6b4a;">
+            Добро пожаловать в КФХ ИП Тахмазян
+        </h2>
+
+        <p>Пожалуйста, введите ваше имя для входа на сайт:</p>
+
+        <input
+            type="text"
+            id="nameInput"
+            placeholder="Введите ваше имя..."
+            aria-label="Ваше имя">
+
+        <button
+            id="startBtn"
+            type="button">
+            Войти
+        </button>
+
+    </div>
+</div>
+
+
+<nav>
+        <ul>
+            
+            <li><a href="milkmaid.html">Молочница</a></li>
+            <li><a href="cheese.html">Сыроварня</a></li>
+            
+            
+
+            <li>
+                <form
+    action="https://yandex.ru/search/"
+    method="get"
+    target="_blank"
+    id="searchForm">
+
+    <input
+        type="text"
+        name="text"
+        id="searchInput"
+        placeholder="Поиск в Яндексе"
+        required>
+
+    <button type="submit">Найти</button>
+</form>
+            </li>
+
+            <li><span id="dateTimeDisplay"></span></li>
+        
+    <li>
+
+    
+        <br>
+                <li>
+    <a href="https://www.gorod-kurganinsk.ru/"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="color:#00ffc3;font-weight:normal;">
+       Визит в наш город →
+    </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+<main>
+
+    <!-- Персональное приветствие -->
+    <h2> id="personalGreeting"></h2>
+
+    <header>
+        <div class="logo home-logo">
+    <img src="images/logo/logo3.png" alt="КФХ ИП Тахмазян">
+</div>
+    </header>
+        <header>
+            <section class="description">
+                <h1>Cайт 
+                    <br>"КФХ ИП Тахмазян"</h1>
+            </section>
+        </header>
+
+        <section>
+    <h2 class="section-title">Наше хозяйство</h2>
+
+    <div class="gallery">
+        <img src="images/nature/entrance.jpg" alt="photo 1" class="thumbnail">
+        <img src="images/nature/farm-building.jpg" alt="photo 2" class="thumbnail">
+        <img src="images/nature/foto1.jpeg" alt="photo 3" class="thumbnail">
+        <img src="images/nature/foto2.jpeg" alt="photo 4" class="thumbnail">
+        <img src="images/nature/foto3.jpeg" alt="photo 5" class="thumbnail">
+        <img src="images/nature/foto4.jpeg" alt="photo 6" class="thumbnail">
+    </div>
+</section>
+        <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
+            <span class="close" aria-label="Close image viewer" role="button" tabindex="0">&times;</span>
+            <img id="lightbox-img"
+                 src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                 alt="Full-size image"
+                 loading="lazy"
+                 decoding="async">
+        </div>
+
+        <section class="description">
+            <h2>Наше хозяйство</h2>
+            <p>Руководителем "КФХ ИП Тахмазян" является Сергей Арамович Тахмазян. 
+            <br>В 90-ые разваливались колхозы и фермы. 
+            <br>Коллектив фермы совместно с Сергеем Арамовичем подняли ферму с колен, 
+            <br>вылечили всех животных и ферма заработала.</p>
+            <p>Каждый год во время уборки сами на спецтехнике заготавливается люцерна, кукуруза, сено.
+            <br>Заполняются силосные ямы, всё с полей Курганинского района.
+            <br>Ветврач следит за здоровьем буренок и телят.
+            <br>Животноводы помогают в работе дояркам.
+            <br>Трактористы распределяют вовремя корма по кормушкам.</p>
+            <p>Коллектив фермы прилагает много усилий,чтобы жители Краснодарского края 
+            <br>были обеспечены натуральным молоком и продуктами из молока.</p>
+        </section>
+
+        <section id="comments">
+    <h3>Комментарии</h3>
+
+    <form id="commentForm">
+        <input type="text" id="name" placeholder="Ваше имя" required>
+
+        <textarea id="comment"
+                  placeholder="Напишите комментарий"
+                  required></textarea>
+
+        <button type="submit">
+            Отправить
+        </button>
+    </form>
+
+    <div id="commentsList"></div>
+</section>
+
+        
+          <footer>
+    <a href="https://maslenikov77.github.io/mywebsite/"
+       target="_blank">
+        © 2026 Denis Maslenikov · Web Design & Frontend
+    </a>
+</footer>
+    </main>
+  
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================
+       Дата, время и часовой пояс
+    ========================= */
+    const dateTimeElement = document.getElementById("dateTimeDisplay");
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const timeZone =
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        const dateTime = now.toLocaleString("ru-RU", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
+
+        if (dateTimeElement) {
+            dateTimeElement.innerHTML = `
+                ${dateTime}<br>
+                🌍 ${timeZone}
+            `;
+        }
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    /* =========================
+       Lightbox галерея
+    ========================= */
+    const thumbnails = document.querySelectorAll(".thumbnail");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const closeBtn = document.querySelector(".lightbox .close");
+
+    if (thumbnails.length && lightbox && lightboxImg && closeBtn) {
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener("click", () => {
+                const fullImgSrc = thumbnail.getAttribute("data-full");
+                lightboxImg.src = fullImgSrc;
+                lightbox.style.display = "flex";
+            });
+        });
+
+        closeBtn.addEventListener("click", () => {
+            lightbox.style.display = "none";
+            lightboxImg.src = "";
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (
+                e.key === "Escape" &&
+                lightbox.style.display === "flex"
+            ) {
+                lightbox.style.display = "none";
+                lightboxImg.src = "";
+            }
+        });
+    }
+
+    /* =========================
+       Бургер-меню
+    ========================= */
+    const menuToggle = document.getElementById("menuToggle");
+    const nav = document.querySelector("nav");
+
+    if (menuToggle && nav) {
+        menuToggle.addEventListener("click", function () {
+            nav.classList.toggle("open");
+        });
+    }
+
+    /* =========================
+       Комментарии
+    ========================= */
+    const form = document.getElementById("commentForm");
+    const commentsList = document.getElementById("commentsList");
+
+    if (form && commentsList) {
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const comment = document.getElementById("comment").value.trim();
+
+            if (!name || !comment) {
+                alert("Заполните все поля.");
+                return;
+            }
+
+            const newComment = document.createElement("div");
+
+            newComment.className = "comment";
+
+            newComment.innerHTML = `
+                <strong>${name}</strong>
+                <p>${comment}</p>
+                <button class="delete-comment">
+                    🗑️ Удалить
+                </button>
+            `;
+
+            commentsList.prepend(newComment);
+
+            form.reset();
+        });
+
+        document.addEventListener("click", function (e) {
+
+            if (e.target.classList.contains("delete-comment")) {
+                e.target.closest(".comment").remove();
+            }
+
+        });
+    }
+
+   /* Стартовое окно */
+const introScreen = document.getElementById("introScreen");
+const nameInput = document.getElementById("nameInput");
+const startBtn = document.getElementById("startBtn");
+const mainContent = document.querySelector("main");
+const greeting = document.getElementById("personalGreeting");
+
+/* Проверяем, был ли посетитель раньше */
+const savedName = localStorage.getItem("visitorName");
+
+if (savedName) {
+
+    introScreen.style.display = "none";
+
+    if (greeting) {
+        greeting.textContent =
+            `👋 С возвращением, ${savedName}!`;
+    }
+
+} else {
+
+    introScreen.style.display = "flex";
+
+    startBtn.addEventListener("click", function () {
+
+        const name = nameInput.value.trim();
+
+        if (name !== "") {
+
+            localStorage.setItem("visitorName", name);
+
+            introScreen.style.display = "none";
+
+            if (greeting) {
+                greeting.textContent =
+                    `👋 Добро пожаловать, ${name}!`;
+            }
+
+                } else {
+
+            alert("Пожалуйста, введите ваше имя.");
+
+        }
+    });
+}
+
+});  // закрывает DOMContentLoaded
+
+</script>
+
+</body>
+    
+
+</html>
